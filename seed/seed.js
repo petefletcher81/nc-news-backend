@@ -14,7 +14,7 @@ const seedDB = ({ topicData, usersData, commentsData, articlesData }) => {
 
       const articleDocs = getArticleData({ articlesData, topicDocs, userDocs })
 
-      console.log(commentsData)
+      //console.log(commentsData)
       Array.from(articleDocs)
       return Promise.all([userDocs, Article.insertMany(articleDocs), commentsData, topicDocs])
     })
@@ -24,6 +24,7 @@ const seedDB = ({ topicData, usersData, commentsData, articlesData }) => {
     .then(([userDocs, articleDocs, commentsData, topicDocs]) => {
       const commentsDocs = getCommentData({ userDocs, articleDocs, commentsData })
       Array.from(commentsDocs)
+      console.log(userDocs)
 
       return Promise.all([userDocs, articleDocs, Comment.insertMany(commentsDocs), topicDocs])
     }

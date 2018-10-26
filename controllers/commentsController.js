@@ -8,12 +8,16 @@ exports.patchAndUpdateComment = (req, res, next) => {
     .then(updatedComment => {
       res.send({ updatedComment })
     })
+    .catch(next)
 }
 
 exports.sendAllComments = (req, res, next) => {
   Comment.find()
-    .then(comments => res.status(200).send({ comments }))
-    .catch(console.log)
+    .then(comments => {
+      if (!comments.length) return res.send({ status: 404, msg: 'topic not found' })
+      res.status(200).send({ comments })
+    })
+    .catch(next)
 }
 
 exports.deleteTheComment = (req, res, next) => {
@@ -21,4 +25,5 @@ exports.deleteTheComment = (req, res, next) => {
     .then(deletedComment => {
       res.send({ deletedComment, msg: 'Comment Deleted' })
     })
+    .catch(next)
 }

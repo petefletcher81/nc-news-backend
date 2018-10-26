@@ -1,7 +1,7 @@
 
 
 exports.handling404 = (err, req, res, next) => {
-  console.log(err)
+  console.log(err.name, '<<<<<<<<<<')
   if (err.status === 404)
     res.status(404).send('not found')
   next(err);
@@ -9,9 +9,9 @@ exports.handling404 = (err, req, res, next) => {
 
 exports.handling400 = (err, req, res, next) => {
   //console.log(err)
-  if (err.status === 400) {
+  if (err.status === 400 || err.name === 'ValidationError') {
     res.status(400).send('bad request')
   } else {
-    res.status(500).send({ msg: 'Internal Server Error' })
+    res.status(500).send({ msg: 'Internal Server Error', err: err })
   }
 }

@@ -25,14 +25,14 @@ app.get('/api', (req, res, next) => {
 app.use('/api', apiRouter);
 
 app.use('/*', (req, res, next) => {
-  next({ status: 404 });
+  next({ status: 400 });
 });
 
+app.use(handling400);
 //all 404 errors -- page not exists
 app.use(handling404);
-
 //all internal or server errors 500
-app.use(handling400);
+
 
 
 
