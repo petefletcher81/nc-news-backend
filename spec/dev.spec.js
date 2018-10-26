@@ -20,8 +20,8 @@ describe('/api', () => {
 
         userDocs = docs[0];
         articleDocs = docs[1];
-        topicDocs = docs[2];
-        commentsDocs = docs[3];
+        commentsDocs = docs[2];
+        topicDocs = docs[3];
 
       }) //seedDB async and recieves a promise
   }) //hooks from mocha
@@ -95,7 +95,7 @@ describe('/api', () => {
 
 
   ///>>>>ARTICLES
-  describe.only('/articles', () => {
+  describe('/articles', () => {
     it('GET /comments returns all the article with status 200', () => {
       return request
         .get('/api/articles')
@@ -190,37 +190,6 @@ describe('/api', () => {
         })
     })
 
-
-    //>>>> patch comments
-    console.log(commentsDocs.id)
-    it('PATCH /comments/:comment_id returns 200 and updated file with up vote', () => {
-      const beforePatch = articleDocs[0].votes
-      //console.log(beforePatch)
-      return request
-        .patch(`/api/comments/${commentDocs[0]._id}?vote=up`)
-        .expect(200)
-        .then(res => {
-          //console.log(res.body)
-          expect(beforePatch + 1).to.equal(res.body.updatedArticle.votes);
-
-        })
-    })
-
-    it('PATCH /articles/:article_id returns 200 and updated file with down vote', () => {
-      const beforePatch = articleDocs[0].votes
-      //console.log(beforePatch)
-      return request
-        .patch(`/api/articles/${articleDocs[0]._id}?vote=down`)
-        .expect(200)
-        .then(res => {
-          //console.log(res.body)
-          expect(beforePatch - 1).to.equal(res.body.updatedArticle.votes);
-
-        })
-    })
-
-
-
     ///>>>>> COMMENTS
     describe('/comments', () => {
       it('GET /comments returns all the topics with status 200', () => {
@@ -232,6 +201,39 @@ describe('/api', () => {
             expect(Array.isArray(res.body.comments)).to.be.true
           })
       })
+
+      //>>>> patch comments
+      it('PATCH /comments/:comment_id returns 200 and updated file with up vote', () => {
+        const beforePatch = commentsDocs[0].votes
+        return request
+          .patch(`/api/comments/${commentsDocs[0]._id}?vote=down`)
+          .expect(200)
+          .then(res => {
+
+            expect(beforePatch + 1).to.equal(res.body.updatedComment.votes);
+          })
+      })
+
+      it('PATCH /articles/:article_id returns 404 and with wrong query', () => {
+        // const beforePatch = articleDocs[0].votes
+        //console.log(beforePatch)
+        return request
+          .patch(`/api/comments/commentsDocs[0]._id?vote=down`)
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal('bad request');
+
+          })
+      })
+      it('DELETE a comment by comment_id', () => {
+        return request
+          .delete(`/api/comments/${commentsDocs[0]._id}`)
+          .expect(200)
+          .then(res => {
+            expect(res.body.msg).to.be.equal('Comment Deleted')
+          })
+      });
+
 
       describe('/users', () => {
         it('GET /users returns all the topics with status 200', () => {

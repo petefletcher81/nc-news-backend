@@ -23,7 +23,7 @@ exports.sendAllComments = (req, res, next) => {
 exports.deleteTheComment = (req, res, next) => {
   Comment.findByIdAndRemove(req.params.comment_id)
     .then(deletedComment => {
-      res.send({ deletedComment, msg: 'Comment Deleted' })
+      res.status(200).send({ deletedComment, msg: 'Comment Deleted' })
     })
     .catch(next)
 }
