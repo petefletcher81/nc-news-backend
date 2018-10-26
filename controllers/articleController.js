@@ -18,30 +18,30 @@ exports.sendArticleById = (req, res, next) => {
   let articleID = req.params.article_id;
   Article.findById(articleID)
     .then(returnedArticle => {
-      // if (!returnedArticle) return res.send({ status: 404, msg: 'article not found' })
+      if (!returnedArticle) return res.send({ status: 404, msg: 'not found' })
       res.send({ returnedArticle })
 
     })
-    .catch(console.log)
+    .catch(next)
 
 }
 
 exports.createNewComment = (req, res, next) => {
   Comment.create(req.body)
     .then(createdComment => {
-      if (!returnedArticle) return res.send({ status: 400, msg: 'bad request' })
-      res.status(201).send({ createdComment })
+      if (!createdComment) return res.send({ status: 400, msg: 'bad request' })
+      res.status(201).send({ createdComment, msg: 'Created!' })
     })
-    .catch(next)
+    .catch(console.log)
 
 }
 
 exports.sendCommentForArt = (req, res, next) => {
-  console.log(req.params.article_id);
+
 
   Comment.find({ belongs_to: req.params.article_id })
     .then(comments => {
-      console.log(comments)
+
       if (!comments) return res.send({ status: 404, msg: 'comment not found' })
       res.status(200).send({ comments })
     })

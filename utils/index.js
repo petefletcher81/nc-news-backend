@@ -2,12 +2,12 @@ const Topic = require('../models/index')
 
 exports.getArticleData = ({ articlesData, topicDocs, userDocs }) => {
 
-  const userID = userDocs.find(user => {
-    user.username === articlesData.created_by
-    return user
-  })
+  //console.log(articlesData)
 
   return articlesData.map((article, index) => {
+    const userID = userDocs.find(user => {
+      return user.username === article.created_by
+    })._id
 
     return {
       ...article,
@@ -22,19 +22,21 @@ exports.getArticleData = ({ articlesData, topicDocs, userDocs }) => {
 
 exports.getCommentData = ({ userDocs, articleDocs, commentsData }) => {
 
-  const userID = userDocs.find((user, index) => {
-    user.username === commentsData[index].created_by
-    return user
-  })
-
-
-  const articleID = userDocs.find(user => {
-    console.log(user._id)
-    user.username === articleDocs.created_by
-    return user
-  })
-
   return commentsData.map(comment => {
+    const userID = userDocs.find((user) => {
+      return user.username === comment.created_by
+    })._id
+    //console.log(userID)
+
+
+    const articleID = articleDocs.find((article) => {
+      //console.log(commentsData)
+      //console.log(article._id)
+      return comment.belongs_to === article.title
+    })._id
+
+    //console.log(articleID)
+
     return {
       ...comment,
       created_by: userID,
