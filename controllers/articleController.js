@@ -7,6 +7,8 @@ const { Article, Comment } = require('../models')
 
 exports.sendAllArticles = (req, res, next) => {
   Article.find()
+    .populate('created_by')
+    .populate('belongs_to')
     .then(articles => {
       if (!articles) return res.send({ status: 404 })
       res.status(200).send({ articles })
@@ -17,6 +19,8 @@ exports.sendAllArticles = (req, res, next) => {
 exports.sendArticleById = (req, res, next) => {
   let articleID = req.params.article_id;
   Article.findById(articleID)
+    .populate('created_by')
+    .populate('belongs_to')
     .then(returnedArticle => {
       if (!returnedArticle) return res.send({ status: 404, msg: 'not found' })
       res.send({ returnedArticle })
@@ -40,6 +44,8 @@ exports.sendCommentForArt = (req, res, next) => {
 
 
   Comment.find({ belongs_to: req.params.article_id })
+    .populate('created_by')
+    .populate('belongs_to')
     .then(comments => {
 
       if (!comments) return res.send({ status: 404, msg: 'comment not found' })
@@ -53,6 +59,8 @@ exports.editAndUpdate = (req, res, next) => {
   let votes = req.query.vote === 'up' ? 1 : req.query.vote === 'down' ? -1 : 0;
 
   Article.findByIdAndUpdate(req.params.article_id, { $inc: { votes: votes } }, { new: true })
+    .populate('created_by')
+    .populate('belongs_to')
     .then(updatedArticle => {
       if (!updatedArticle) return res.send({ status: 404, msg: 'comment not found' })
       res.send({ updatedArticle })

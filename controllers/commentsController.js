@@ -13,6 +13,8 @@ exports.patchAndUpdateComment = (req, res, next) => {
 
 exports.sendAllComments = (req, res, next) => {
   Comment.find()
+    .populate('created_by')
+    .populate('belongs_to')
     .then(comments => {
       if (!comments.length) return res.send({ status: 404, msg: 'topic not found' })
       res.status(200).send({ comments })
