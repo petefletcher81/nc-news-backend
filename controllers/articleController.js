@@ -5,27 +5,61 @@ const { Article, Comment } = require('../models')
 //404 not found
 //400 bad request
 
+// function commentCounts(article) {
+
+//   Comment.countDocuments({ belongs_to: article._id })
+//     .then(count => {
+//       //console.log(count)
+//       return count
+//     })
+//     .catch(console.log)
+// }
+
 exports.sendAllArticles = (req, res, next) => {
-  Article.find()
+
+  return Article.find()
     .populate('created_by')
-    .populate('belongs_to')
-    .then(articles => {
-      if (!articles) return res.send({ status: 404 })
-      res.status(200).send({ articles })
+    .lean()
+    .then(articleDocs => {
+      const count = articleDocs.map(art => {
+        return Comment.count({ belongs_to: art._id })
+      })
+      return Promise.all([articleDocs, ...count])
+    })
+    .then(([articleDocs, ...comments]) => {
+
+      const newArticles = articleDocs.map((art, index) => {
+        return {
+          ...art,
+          comment_count: comments[index]
+        }
+      })
+      if (!newArticles) return res.send({ status: 404 })
+      res.status(200).send({ newArticles })
     })
     .catch(next)
 }
 
 exports.sendArticleById = (req, res, next) => {
   let articleID = req.params.article_id;
+
   Article.findById(articleID)
     .populate('created_by')
-    .populate('belongs_to')
     .then(returnedArticle => {
-      if (!returnedArticle) return res.send({ status: 404, msg: 'not found' })
-      res.send({ returnedArticle })
-
+      const count = Comment.count({ belongs_to: returnedArticle._id })
+      return Promise.all([returnedArticle, count])
     })
+    .then(([article, count]) => {
+      const searchedArticle = {
+        article,
+        comment_count: count
+      }
+      //console.log(searchedArticle)
+      if (!searchedArticle) return res.send({ status: 404, msg: 'not found' })
+      res.send({ searchedArticle })
+    })
+
+    // })
     .catch(next)
 
 }
@@ -36,7 +70,7 @@ exports.createNewComment = (req, res, next) => {
       if (!createdComment) return res.send({ status: 400, msg: 'bad request' })
       res.status(201).send({ createdComment, msg: 'Created!' })
     })
-    .catch(console.log)
+    .catch(next)
 
 }
 
@@ -60,10 +94,18 @@ exports.editAndUpdate = (req, res, next) => {
 
   Article.findByIdAndUpdate(req.params.article_id, { $inc: { votes: votes } }, { new: true })
     .populate('created_by')
-    .populate('belongs_to')
     .then(updatedArticle => {
-      if (!updatedArticle) return res.send({ status: 404, msg: 'comment not found' })
-      res.send({ updatedArticle })
+      const count = Comment.count({ belongs_to: updatedArticle._id })
+      return Promise.all([updatedArticle, count])
+    })
+    .then(([article, count]) => {
+      const searchedArticle = {
+        article,
+        comment_count: count
+      }
+      //console.log(searchedArticle)
+      if (!searchedArticle) return res.send({ status: 404, msg: 'not found' })
+      res.send({ searchedArticle })
     })
     .catch(next)
 }

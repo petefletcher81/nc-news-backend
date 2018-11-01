@@ -1,80 +1,73 @@
-## Northcoders News API
+#NORTHCODERS NEWS
 
-### Background
+This project allows you to access a fully functional news api.  It is the complete back end to the project which includes a database built in MongoDB, with the use of mongoose to help which is a schema-based solution for the application. In addition to these, a server has been built in Express JS allowing restful implementations such as GET, POST, PATCH and DELETE.  
 
-We will be building the API which to use in the Northcoders News Sprint during the Front End block of the course.
+###Lets Begin --> getting started and the set up
 
-Our database will be MongoDB. Your Mongoose models have been created for you so that you can see what the data should look like.
+1. To get started, simple fork the project within github and then clone the repo. for a guide on doing this visit https://help.github.com/articles/fork-a-repo/ **fork and clone this repo https://github.com/petefletcher81/BE2-northcoders-news**
 
-### Mongoose Documentation
+2. Once cloned, cd into the project with `cd (name of the folder)`. 
 
-The below are some of the model methods that you can call on your models.
+3. Then in the folder, simply type `code .` to load VS code and start the application in the right file.  Make sure you check the file as from the terminal in VS code by typing `ls`.  if you are in the correct folder (northcoders_news) or something that you saved it as, we can continue :).
 
-* [find](http://mongoosejs.com/docs/api.html#model_Model.find)
-* [findOne](http://mongoosejs.com/docs/api.html#model_Model.findOne)
-* [findOneAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findOneAndUpdate)
-* [findOneAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove)
-* [findById](http://mongoosejs.com/docs/api.html#model_Model.findById)
-* [findByIdAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate)
-* [findByIdAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove)
-* [update](http://mongoosejs.com/docs/api.html#model_Model.update)
-* [create](https://mongoosejs.com/docs/api.html#model_Model.create)
-* [remove](http://mongoosejs.com/docs/api.html#model_Model-remove)
-* [save](http://mongoosejs.com/docs/api.html#model_Model-save)
-* [count](http://mongoosejs.com/docs/api.html#model_Model.count)
-* [populate](https://mongoosejs.com/docs/api.html#model_Model.populate)
+4. Once we are in the right folder we want to install our package.json, with the scripts, dependancies and dev dependancies. Below is a list or things you will need to install and links to the documentation about the installation.
 
-### Step 1 - Seeding
+first lets install our package.json with `npm init`
+Then lets sort our server and database.
 
-Data has been provided for both testing and development environments so you will need to write a seed function to seed your database. You should think about how you will write your seed file to use either test data or dev data depending on the environment that you're running in.
+*[Express JS](https://expressjs.com/en/starter/installing.html) 
+*[MongoDB](https://docs.mongodb.com/manual/installation/)
 
-1.  You will need to seed the topics and users, followed by the articles and comments. 
+dependancies are more straight-forward and can be done easily with npm installs --> below we hace our dependancies along with the links to the documentation to help you get started.
+*[Mongoose](https://mongoosejs.com/docs/) `npm install mongoose`
+*[Body-parser](https://www.npmjs.com/package/body-parser) `npm install body-parser`
+*[ejs](https://www.npmjs.com/package/ejs)`npm install ejs`
 
-* Each article should have:
-  * a `belongs_to` property, that references a topic's `slug`, and 
-  * a `created_by` property that references a user's mongo `_id`. 
-* Each comment should have:
-  * a `created_by` property that references a user's mongo `_id` and 
-  * a `belongs_to` property that references the specific article's mongo `_id`.
+devDependancies needed in case you right additional tests
+*[mocha](https://www.npmjs.com/package/mocha) `npm install mocha`
+*[chai](https://www.npmjs.com/package/chai) `npm install chai`
+*[nodemon](https://www.npmjs.com/package/nodemon) `npm install nodemon`
+*[supertest](https://www.npmjs.com/package/supertest) `npm install supertest --save-dev`
 
-### Step 2 - Building and Testing
+5. Great! now is time to creat a config file as the .gitignore shows this cannot be pushed to the repo.  We can do this simply by implementing the following.
+Type `mkdir config` then `touch config/config.js`.  Once entered, add the below code to the file.
+const ENV = process.env.Node_ENV || 'test'
 
-1.  Build your Express App
-2.  Mount an API Router onto your app
-3.  Define the routes described below
-4.  Define controller functions for each of your routes (remember to use `.populate` for `created_by` and `belongs_to` fields that are mongo ids! This will be extremely useful when you are working on the front-end!)
-5.  You will also need to return a `comment_count` property on all your endpoints that return articles. Attempt it on a single article first, then apply it to your all articles endpoint and finally your post new article. This is a great challenge to help consolidate your understanding of promises. (Note: do __not__ change the models to have a `comment_count` value in the database!)
-6.  Use proper project configuration from the offset, being sure to treat development and test differently.
-7.  Test each route as you go. Remember to test the happy and the unhappy paths! Make sure your error messages are helpful and your error status codes are chosen correctly. Remember to seed the test database using the seeding function and make the saved data available to use within your test suite.
+```const config = {
+  'development': {
+    port: 9090,
+    DB_URL: 'mongodb://localhost:27017/northcoders_news',
+    database: 'northercoders_news'
+  },
+  'test': {
+    port: 9090,
+    DB_URL: 'mongodb://localhost:27017/northcoders_news',
+    database: 'northercoders_news_test'
+  }
+}
 
-
-**HINT** Make sure to drop and reseed your test database with every test. This will make it much easier to keep track of your data throughout. In order for this to work, you are going to need to keep track of the MongoIDs your seeded docs have been given. In order to do this, you might want to consider what your seed file returns, and how you can use this in your tests.
-
-### Routes
-
-Your server should have the following end-points:
-
-```http
-GET /api 
-# Serves an HTML page with documentation for all the available endpoints
+module.exports = config[ENV]
 ```
 
-```http
-GET /api/topics
-# Get all the topics
-```
+#SEEDING THE DATABASE
+6. make sure that you have followed the above instructions for installing MongoDB.  Once installed we need to be running an instance of mongo daemon.  this is done simply by typing 
 
-```http
-GET /api/topics/:topic_slug/articles
-# Return all the articles for a certain topic
-# e.g: `/api/topics/football/articles`
-```
+'mongod'
 
-```http
-POST /api/topics/:topic_slug/articles
-# Add a new article to a topic. This route requires a JSON body with title and body key value pairs
-# e.g: `{ "title": "new article", "body": "This is my new article content", "created_by": "user_id goes here"}`
-```
+in the terminal.  Now leave this running and add a new terminal instance by clicking `+` on the right hand side of the terminal toolbar.  
+
+With the scripts already set up you can now run the seed:dev by typing
+
+`npm run seed:dev`
+
+To check thes are in the database, open another terminal instance by clicking the `+`.  Now type `mongo` which will take you to the mongo shell.  We can browse the databases with `show dbs`.  Next choose our database that we seeded with `use northcoders_news` then we want to see the collections with `show collections`.  This will highlight all the different collections we have.  You will see, Articles, Users, Comments and Topics.  We can view any of these by typing `db.articles.find().pretty()` will show all the article documents in that collection.  
+
+Here is a reference guide to the [mongo shell commands](https://docs.mongodb.com/manual/reference/mongo-shell/).
+
+#RUNNING THE API
+7. for running the api, we need to consider how we can get, post and patch the information. In a normal browser we can only get information, so to enable the other CRUD protocols we can use a piece of software called [Postman](https://www.getpostman.com/). With this software we can access the functionality of our endpoints.
+
+*install Postman - then you will be able to go to the following paths: -
 
 ```http
 GET /api/articles
@@ -120,14 +113,6 @@ GET /api/users/:username
 # Returns a JSON object with the profile data for the specified user.
 ```
 
-NOTE: When it comes to building your front end you'll find it extremely useful if your POST comment endpoint returns the new comment with the created_by property populated with the corresponding user object.
+#Runing the tests
 
-### Step 3 - Hosting
-
-Once you are happy with your seed/dev file, prepare your project for production. You will need to seed the development data to mLab, and host the API on Heroku. If you've forgotten how to do this, you may want to look at this tutorial! https://www.sitepoint.com/deploy-rest-api-in-30-mins-mlab-heroku/
-
-### Step 4 - Preparing for your review and portfolio
-
-Finally, you should write a README for this project (and remove this one). The README should be broken down like this: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
-
-It should also include the link where your herokuapp is hosted.
+For testing we 
