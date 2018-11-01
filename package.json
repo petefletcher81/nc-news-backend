@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run seed:dev && mocha spec",
-    "start": "node index.js",
+    "start": "node listen.js",
     "dev": "nodemon listen.js",
     "seed:dev": "node ./seed/seed.dev.js",
     "seedTest": ""
