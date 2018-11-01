@@ -65,9 +65,18 @@ To check thes are in the database, open another terminal instance by clicking th
 Here is a reference guide to the [mongo shell commands](https://docs.mongodb.com/manual/reference/mongo-shell/).
 
 #RUNNING THE API
-7. for running the api, we need to consider how we can get, post and patch the information. In a normal browser we can only get information, so to enable the other CRUD protocols we can use a piece of software called [Postman](https://www.getpostman.com/). With this software we can access the functionality of our endpoints.
+7. for running the api, we need to consider how we can get, post and patch the information. In a normal browser we can only get information, so to enable the other CRUD protocols we can use a piece of software called [Postman](https://www.getpostman.com/). With this software we can access the functionality of our endpoints
 
 *install Postman - then you will be able to go to the following paths: -
+
+`npm run dev` will initiate the api and give you the following message
+
+"listening from 9090
+we are connected...."
+
+Using the the folowing 
+http://localhost:9090/api
+
 
 ```http
 GET /api/articles
@@ -115,4 +124,102 @@ GET /api/users/:username
 
 #Runing the tests
 
-For testing we 
+For testing we we can go over to `spec/dev.spec.js` to see all of the tests implemented.  It is here if you 
+need to add or amend any of the tests. To run the test file `npm run test` and it will run and verify the 
+following tests in the terminal
+
+```we are connected....
+    /topics
+      ✓ GET /topics returns all the topics with status 200
+      ✓ GET /topics/:slug/articles returns all the articles from a given slug with 200 status
+      ✓ GET /topics/:slug/articles returns 404 when slug not found
+      ✓ POST topics/mitch/articles returns 201 status and creates new article
+      ✓ POST topics/cats/articles returns 400 status when missing fields within
+    /articles
+      ✓ GET /comments returns all the article with status 200
+      ✓ GET /articles/:article_id returns the article with and a status 200
+      ✓ GET /articles/:article_id returns 400 for a article not found
+      ✓ GET /articles/:article_id/comments returns all the comments for an article
+      ✓ POST api/articles/:article_id/comments returns 201 with a new comment to an article
+      ✓ POST api/articles/:article_id/comments returns 400 with a new comment to an article without belongs to field
+      ✓ PATCH /articles/:article_id returns 200 and updated file with up vote
+      ✓ PATCH /articles/:article_id returns 200 and updated file with down vote
+      ✓ PATCH /articles/:article_id returns 404 and with wrong query
+    /comments
+      ✓ GET /comments returns all the topics with status 200
+      ✓ PATCH /comments/:comment_id returns 200 and updated file with up vote
+      ✓ PATCH /comments/:comment_id returns 200 and updated file with down vote
+      ✓ PATCH /articles/:article_id returns 400 and with wrong query
+      ✓ DELETE a comment by comment_id
+      /users
+      ✓ GET /users returns all the topics with status 200
+      ✓ GET /articles/:article_id returns 404 for a article not found
+```
+for the testing I used chai mocha and supertest.  This unit testing reseeded the database at 
+the start of each run command.
+
+The tests cover each of the endpoints ensuring the happy route (things we know that should work).
+Then I tested the the error handling including status 400's and 404's.
+
+Here's an example of the happy route test
+```
+describe('/topics', () => {
+    it('GET /topics returns all the topics with status 200', () => {
+      return request
+        .get('/api/topics')
+        .expect(200)
+        .then(res => {
+
+          expect(res.body.topics[0].title).to.equal(`${topicDocs[0].title}`)
+          expect(Array.isArray(res.body.topics)).to.be.true
+        })
+    })
+```
+
+Here's an example of error handling tests.
+
+```
+it('POST topics/cats/articles returns 400 status when missing fields within the topic schema', () => {
+    const newArticle = {
+      votes: 80,
+      created_by: `${topicDocs[0]._id}`,
+      body: 'Today is a good day',
+      belongs_to: `${articleDocs[0].belongs_to}`
+    }
+    return request
+      .post('/api/topics/cats/articles')
+      .expect(400)
+      .send(newArticle)
+      .then(res => {
+        //console.log(res.body.msg)
+        expect(res.body.msg).to.be.equal('bad request')
+      })
+  })
+```
+
+#Deployment
+
+This app has been deployed using [mLabs](https://mlab.com/) which was used to host the mongoDB database.
+Secondly, [Heroku](https://www.heroku.com/) whichallowed the app to be ran entirely in the cloud.
+
+NEED A LINK
+
+#Built With - 
+
+[Visual Studio Code](https://code.visualstudio.com)
+[Express JS](https://expressjs.com)
+[MongoDB](https://www.mongodb.com)
+
+Please see full list of dependancies and devDependancies at the beginning.
+
+#Authors
+
+- Pete Fletcher - Northcoders News - Northcoders Student
+
+#Acknowledgements
+
+Paul Copley
+Sam Caine
+Alex Cox
+Paul Rogerson
+And my wonderful co-hort!

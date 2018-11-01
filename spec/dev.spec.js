@@ -16,7 +16,7 @@ describe('/api', () => {
   beforeEach(() => {
     return seedDB({ topicData, usersData, commentsData, articlesData })
       .then(docs => {
-        console.log('seeded fresh database')
+        // console.log('seeded fresh database')
 
         userDocs = docs[0];
         articleDocs = docs[1];
@@ -76,7 +76,7 @@ describe('/api', () => {
         })
     })
   })
-  it('POST topics/cats/articles returns 400 status when missing fields within', () => {
+  it('POST topics/cats/articles returns 400 status when missing fields within the topic schema', () => {
     const newArticle = {
       votes: 80,
       created_by: `${topicDocs[0]._id}`,
