@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const { DB_URL } = process.env.NODE_ENV === 'production' ? process.env : require('./config/config')
 const { handling404, handling400, handling500 } = require('./error/errorHandling');
 
+app.use(cors());
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
   .then(() => console.log('we are connected....'))
