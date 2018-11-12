@@ -1,5 +1,3 @@
-
-
 const app = require('express')();
 const bodyParser = require("body-parser")
 const apiRouter = require('./routes/apiRouter')
@@ -8,13 +6,13 @@ const cors = require('cors')
 const { DB_URL } = process.env.NODE_ENV === 'production' ? process.env : require('./config/config')
 const { handling404, handling400, handling500 } = require('./error/errorHandling');
 
-app.use(cors());
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
   .then(() => console.log('we are connected....'))
   .catch(console.log)
 
 
+app.use(cors());
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
