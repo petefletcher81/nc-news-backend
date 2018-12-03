@@ -1,10 +1,10 @@
-#NORTHCODERS NEWS
+# NORTHCODERS NEWS
 
 This project allows you to access a fully functional news api. It is the complete back end to the project which includes a database built in MongoDB, with the use of mongoose to help which is a schema-based solution for the application. In addition to these, a server has been built in Express JS allowing restful implementations such as GET, POST, PATCH and DELETE.
 
 Here is the live link to the front page of the back end: [Front Page](https://ncnew-pete.herokuapp.com/api)
 
-###Lets Begin --> getting started and the set up
+### Lets Begin --> getting started and the set up
 
 1. To get started, simple fork the project within github and then clone the repo. for a guide on doing this visit https://help.github.com/articles/fork-a-repo/ **fork and clone this repo https://github.com/petefletcher81/BE2-northcoders-news**
 
@@ -50,7 +50,7 @@ devDependancies needed in case you right additional tests
 module.exports = config[ENV]
 ```
 
-#SEEDING THE DATABASE
+# SEEDING THE DATABASE
 
 6. make sure that you have followed the above instructions for installing MongoDB. Once installed we need to be running an instance of mongo daemon. this is done simply by typing
 
@@ -66,7 +66,7 @@ To check thes are in the database, open another terminal instance by clicking th
 
 Here is a reference guide to the [mongo shell commands](https://docs.mongodb.com/manual/reference/mongo-shell/).
 
-#RUNNING THE API
+# RUNNING THE API
 
 7. for running the api, we need to consider how we can get, post and patch the information. In a normal browser we can only get information, so to enable the other CRUD protocols we can use a piece of software called [Postman](https://www.getpostman.com/). With this software we can access the functionality of our endpoints
 
@@ -124,7 +124,7 @@ GET /api/users/:username
 # Returns a JSON object with the profile data for the specified user.
 ```
 
-#Runing the tests
+# Running the tests
 
 For testing we we can go over to `spec/dev.spec.js` to see all of the tests implemented. It is here if you
 need to add or amend any of the tests. To run the test file `npm run test` and it will run and verify the
@@ -201,14 +201,14 @@ it('POST topics/cats/articles returns 400 status when missing fields within the 
   })
 ```
 
-#Deployment
+# Deployment
 
 This app has been deployed using [mLabs](https://mlab.com/) which was used to host the mongoDB database.
 Secondly, [Heroku](https://www.heroku.com/) which allowed the app to be ran entirely in the cloud.
 
 [Deployed Backend](https://ncnew-pete.herokuapp.com/api)
 
-#Built With
+# Built With
 
 [Visual Studio Code](https://code.visualstudio.com)
 [Express JS](https://expressjs.com)
@@ -216,11 +216,11 @@ Secondly, [Heroku](https://www.heroku.com/) which allowed the app to be ran enti
 
 Please see full list of dependancies and devDependancies at the beginning.
 
-#Authors
+# Authors
 
 - Pete Fletcher - Northcoders News - Northcoders Student
 
-#Acknowledgements
+# Acknowledgements
 
 Paul Copley
 Sam Caine
