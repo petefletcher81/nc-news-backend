@@ -17,18 +17,18 @@ Here is the live link to the front page of the back end: [Front Page](https://nc
 first lets install our package.json with `npm init`
 Then lets sort our server and database.
 
-_[Express JS](https://expressjs.com/en/starter/installing.html)
-_[MongoDB](https://docs.mongodb.com/manual/installation/)
+[Express JS](https://expressjs.com/en/starter/installing.html)
+[MongoDB](https://docs.mongodb.com/manual/installation/)
 
 dependancies are more straight-forward and can be done easily with npm installs --> below we hace our dependancies along with the links to the documentation to help you get started.
-_[Mongoose](https://mongoosejs.com/docs/) `npm install mongoose`
-_[Body-parser](https://www.npmjs.com/package/body-parser) `npm install body-parser` \*[ejs](https://www.npmjs.com/package/ejs)`npm install ejs`
+[Mongoose](https://mongoosejs.com/docs/) `npm install mongoose`
+[Body-parser](https://www.npmjs.com/package/body-parser) `npm install body-parser` \*[ejs](https://www.npmjs.com/package/ejs)`npm install ejs`
 
 devDependancies needed in case you right additional tests
-_[mocha](https://www.npmjs.com/package/mocha) `npm install mocha`
-_[chai](https://www.npmjs.com/package/chai) `npm install chai`
-_[nodemon](https://www.npmjs.com/package/nodemon) `npm install nodemon`
-_[supertest](https://www.npmjs.com/package/supertest) `npm install supertest --save-dev`
+[mocha](https://www.npmjs.com/package/mocha) `npm install mocha`
+[chai](https://www.npmjs.com/package/chai) `npm install chai`
+[nodemon](https://www.npmjs.com/package/nodemon) `npm install nodemon`
+[supertest](https://www.npmjs.com/package/supertest) `npm install supertest --save-dev`
 
 5. Great! now is time to creat a config file as the .gitignore shows this cannot be pushed to the repo. We can do this simply by implementing the following.
    Type `mkdir config` then `touch config/config.js`. Once entered, add the below code to the file.
@@ -204,11 +204,11 @@ it('POST topics/cats/articles returns 400 status when missing fields within the 
 #Deployment
 
 This app has been deployed using [mLabs](https://mlab.com/) which was used to host the mongoDB database.
-Secondly, [Heroku](https://www.heroku.com/) whichallowed the app to be ran entirely in the cloud.
+Secondly, [Heroku](https://www.heroku.com/) which allowed the app to be ran entirely in the cloud.
 
-NEED A LINK
+[Deployed Backend](https://ncnew-pete.herokuapp.com/api)
 
-#Built With -
+#Built With
 
 [Visual Studio Code](https://code.visualstudio.com)
 [Express JS](https://expressjs.com)
